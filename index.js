@@ -20,12 +20,49 @@ async function run() {
         await client.connect();
         const database = client.db("holiday-tourism");
         const packageCollection = database.collection("packages");
+        const userCollection = database.collection("user");
 
         //Get package API
         app.get('/packages', async (req, res) => {
             const cursor = packageCollection.find({});
-            const packages = await cursor.toArray();
-            res.send(" getting package ", packages);
+            const package = await cursor.toArray();
+            res.send(package);
+        });
+
+        //Get single Package
+        app.get('/packages/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const package = await packageCollection.findOne(query);
+            res.json(package);
+        })
+        app.get('/user', async (req, res) => {
+            const cursor = userCollection.find({});
+            const user = await cursor.toArray();
+            res.send(user);
+        });
+
+        //Get single booking
+        app.get('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const user = await userCollection.findOne(query);
+            res.json(user);
+        })
+
+        //POST package API
+        app.post('/packages', async (req, res) => {
+            const newPackage = req.body;
+            const result = await packageCollection.insertOne(newPackage);
+            console.log(result)
+            res.json(result);
+
+        })
+        app.post('/user', async (req, res) => {
+            const newUser = req.body;
+            const result = await userCollection.insertOne(newUser);
+            console.log(result);
+            res.json(result);
         })
     }
     finally {
