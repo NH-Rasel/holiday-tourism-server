@@ -87,6 +87,14 @@ async function run() {
             const result = await userCollection.deleteOne(query);
             res.json(result);
         })
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('updating', id)
+            // const options = { upsert: true };
+            // const query = { _id: ObjectId(id) };
+            // const result = await userCollection.updateOne(options, query);
+            res.send('updated');
+        })
     }
     finally {
         // await client.close();
