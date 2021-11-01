@@ -87,6 +87,7 @@ async function run() {
             const result = await userCollection.deleteOne(query);
             res.json(result);
         })
+        //Update API
         app.put('/user/:id', async (req, res) => {
             const id = req.params.id;
             const updateBooking = req.body;
