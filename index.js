@@ -21,6 +21,7 @@ async function run() {
         const database = client.db("holiday-tourism");
         const packageCollection = database.collection("packages");
         const userCollection = database.collection("user");
+        const blogCollection = database.collection("blogs");
 
         //Get package API
         app.get('/packages', async (req, res) => {
@@ -36,6 +37,7 @@ async function run() {
             const package = await packageCollection.findOne(query);
             res.json(package);
         })
+        //GET  booking API
         app.get('/user', async (req, res) => {
             const cursor = userCollection.find({});
             const user = await cursor.toArray();
@@ -49,6 +51,12 @@ async function run() {
             const user = await userCollection.findOne(query);
             res.json(user);
         })
+        //GET blog API
+        app.get('/blogs', async (req, res) => {
+            const cursor = blogCollection.find({});
+            const blog = await cursor.toArray();
+            res.send(blog);
+        })
 
         //POST package API
         app.post('/packages', async (req, res) => {
@@ -58,9 +66,17 @@ async function run() {
             res.json(result);
 
         })
+        //POST user API
         app.post('/user', async (req, res) => {
             const newUser = req.body;
             const result = await userCollection.insertOne(newUser);
+            console.log(result);
+            res.json(result);
+        })
+        //POST blog API
+        app.post('/blogs', async (req, res) => {
+            const newBlog = req.body;
+            const result = await blogCollection.insertOne(newBlog);
             console.log(result);
             res.json(result);
         })
