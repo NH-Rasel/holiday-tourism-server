@@ -89,11 +89,16 @@ async function run() {
         })
         app.put('/user/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('updating', id)
-            // const options = { upsert: true };
-            // const query = { _id: ObjectId(id) };
-            // const result = await userCollection.updateOne(options, query);
-            res.send('updated');
+            const updateBooking = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: updateBooking.status
+                },
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options)
+            res.json(result);
         })
     }
     finally {
